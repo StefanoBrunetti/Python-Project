@@ -1,0 +1,98 @@
+'********************************************
+'Calcolo lunghezza nastro
+'********************************************
+
+from tkinter import *
+from tkinter import ttk
+import math
+import clipboard
+
+ 
+def calculate(*args):
+    try:
+        value = float(feet.get())
+        cateto = float(catetoA.get())
+        lunghezza = math.sqrt(pow(value,2)+pow(cateto,2))
+        meters.set(round(lunghezza,2))
+        c = math.atan((cateto/value))
+        calcoloAngolo = (c*180)/math.pi
+        angolo.set(round(calcoloAngolo,2))
+        
+
+    except ValueError:
+        valoreErrato()
+        pass
+
+def cancella (*args):
+    try:
+        meters.set("")
+        angolo.set("")
+        feet.set("")
+        catetoA.set("")
+    except ValueError:
+        pass
+
+def valoreErrato (*args):
+    try:
+        feet.set("")
+        catetoA.set("")
+    except ValueError:
+        pass      
+   
+
+root = Tk()
+w = 320
+h = 200
+
+fw = root.winfo_screenwidth()
+fh = root.winfo_screenheight()
+
+x = (fw - w)/2
+y = (fh - h)/2
+
+
+root.title("Lunghezza Nastro")
+root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+root.resizable(width=FALSE, height=FALSE)
+
+mainframe = ttk.Frame(root, padding="5 5 15 15")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+mainframe.columnconfigure(0, weight=1)
+mainframe.rowconfigure(0, weight=1)
+
+
+
+feet = StringVar()
+meters = StringVar()
+catetoA =StringVar()
+lunghezza =float()
+calcoloAngolo = float()
+angolo = StringVar()
+
+
+feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
+feet_entry.grid(column=2, row=1, sticky=(W, E))
+catetoA_entry =ttk.Entry(mainframe, width=7, textvariable=catetoA)
+catetoA_entry.grid(column=2, row=2, sticky=(W, E))
+ttk.Label(mainframe, textvariable=meters).grid(column=2, row=3, sticky=(E))
+ttk.Label(mainframe, textvariable=angolo).grid(column=2, row=4, sticky=(E))
+ttk.Button(mainframe, text="Calcola", command=calculate).grid(column=3, row=5,
+sticky=W)
+ttk.Button(mainframe, text="Cancella", command=cancella).grid(column=2, row=5,
+sticky=W)
+ttk.Label(mainframe, text="Base Nastro").grid(column=3, row=1, sticky=W)
+ttk.Label(mainframe, text="Altezza Nastro").grid(column=3, row=2, sticky=W)
+ttk.Label(mainframe, text="La lunghezza è:").grid(column=1, row=3, sticky=E)
+ttk.Label(mainframe, text="m").grid(column=3, row=3, sticky=W)
+
+ttk.Label(mainframe, text="Il nastro ha un angolo':").grid(column=1, row=4, sticky=E)
+ttk.Label(mainframe, text="°").grid(column=3, row=4, sticky=W)
+ttk.Label(mainframe, text="Created with Python").grid(column=1, row=6, sticky=W)
+ttk.Label(mainframe, text="E=m·c² 2021").grid(column=3, row=6, sticky=E)
+for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
+
+feet_entry.focus()
+root.bind('<Return>', calculate)
+
+root.mainloop()
